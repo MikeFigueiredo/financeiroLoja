@@ -1,0 +1,24 @@
+{
+  "name": "financeiroloja",
+  "version": "1.0.0",
+  "description": "Sistema financeiro para loja de roupas — projeto de portfólio (dev + automação de testes QA)",
+  "private": true,
+  "scripts": {
+    "install:all": "npm install && npm install --prefix backend && npm install --prefix frontend",
+    "db:up": "docker compose up -d db",
+    "db:down": "docker compose down",
+    "db:migrate": "npm run migrate --prefix backend",
+    "db:seed": "npm run seed --prefix backend",
+    "db:setup": "npm run db:up && npm run db:migrate && npm run db:seed",
+    "dev:backend": "npm run dev --prefix backend",
+    "dev:frontend": "npm run dev --prefix frontend",
+    "dev": "concurrently \"npm:dev:backend\" \"npm:dev:frontend\"",
+    "cy:open": "cypress open",
+    "cy:run": "cypress run",
+    "test:e2e": "npm run db:seed && npm run cy:run"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "cypress": "^13.13.0"
+  }
+}

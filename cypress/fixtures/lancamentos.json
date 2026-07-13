@@ -1,0 +1,13 @@
+{
+  "novoLancamento": {
+    "descricao": "Venda de teste automatizado",
+    "categoria": "Vendas",
+    "valor": "199.90",
+    "diasParaVencimento": 10,
+    "formaPagamento": "Pix"
+  },
+  "edicaoLancamento": {
+    "descricao": "Venda de teste automatizado - editado",
+    "valor": "250.00"
+  }
+}

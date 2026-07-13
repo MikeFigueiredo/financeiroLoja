@@ -1,0 +1,86 @@
+name: Testes E2E (Cypress)
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
+
+jobs:
+  cypress:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: financeiroloja
+          POSTGRES_PASSWORD: financeiroloja
+          POSTGRES_DB: financeiroloja
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      # Valores fixos de CI, não são segredos reais: o Postgres é descartável (container
+      # efêmero do job) e o JWT_SECRET só precisa ser consistente durante a execução dos
+      # testes. Nenhum GitHub Secret é necessário para este workflow.
+      DATABASE_URL: postgresql://financeiroloja:financeiroloja@localhost:5432/financeiroloja
+      JWT_SECRET: chave-de-teste-usada-apenas-em-ci
+      JWT_EXPIRES_IN: 8h
+      PORT: 4000
+      VITE_API_URL: http://localhost:4000/api
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Instalar dependências (raiz, backend, frontend)
+        run: npm run install:all
+
+      - name: Migrar banco de dados
+        run: npm run db:migrate
+
+      - name: Semear banco de dados
+        run: npm run db:seed
+
+      - name: Iniciar backend e frontend em segundo plano
+        run: |
+          npm start --prefix backend &
+          npm run dev --prefix frontend &
+
+      - name: Esperar backend e frontend responderem
+        run: |
+          for i in $(seq 1 30); do
+            curl -sf http://localhost:4000/api/health > /dev/null && break
+            echo "aguardando backend... ($i/30)"
+            sleep 2
+          done
+          for i in $(seq 1 30); do
+            curl -sf http://localhost:5173 > /dev/null && break
+            echo "aguardando frontend... ($i/30)"
+            sleep 2
+          done
+
+      - name: Rodar suíte Cypress
+        run: npm run cy:run
+
+      - name: Upload de screenshots/vídeos em caso de falha
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: evidencias-cypress
+          path: |
+            cypress/screenshots
+            cypress/videos
+          if-no-files-found: ignore

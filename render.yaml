@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: financeiroloja-backend
+    runtime: node
+    plan: free
+    rootDir: backend
+    buildCommand: npm install
+    # Roda em toda implantação — é seguro porque backend/db/migrate.js controla quais
+    # migrations já foram aplicadas (tabela schema_migrations). NÃO inclui o seed aqui:
+    # ele faz TRUNCATE nas tabelas e apagaria dados reais a cada deploy. Rode o seed
+    # manualmente uma única vez pelo Shell do Render (aba "Shell" do serviço): npm run seed
+    preDeployCommand: npm run migrate
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 8h
