@@ -13,20 +13,29 @@ describe('Lançamentos — Listagem e Filtros', () => {
 
   it('Deve filtrar por status "Pago" e mostrar apenas lançamentos pagos', () => {
     cy.getByTest(lancamentosSelectors.filtroStatus).select('pago')
-    cy.getByTest(lancamentosSelectors.tabela).find('tbody tr').should('have.length.greaterThan', 0)
-    // Usa assert síncrono do Chai em vez de cy.wrap().should() — a tabela pode re-renderizar
-    // entre a query do .each() e a asserção, e o Cypress não consegue reconsultar um elemento
-    // que já foi substituído pelo React (erro "element has detached from the DOM").
-    cy.getByTest(lancamentosSelectors.tabela).find('tbody tr').each(($row) => {
-      expect($row.text()).to.contain('Pago')
-    })
+    // Uma única asserção via callback: o Cypress reconsulta o DOM do zero em cada retry,
+    // então cobre tanto esperar a resposta filtrada da API chegar (evita ler as linhas
+    // antigas, que já existiam antes do filtro e fariam ">0" passar de imediato) quanto
+    // evitar "element detached from DOM" (nunca reusa um elemento de uma consulta antiga).
+    cy.getByTest(lancamentosSelectors.tabela)
+      .find('tbody tr')
+      .should(($rows) => {
+        expect($rows.length).to.be.greaterThan(0)
+        $rows.each((_, row) => {
+          expect(row.innerText).to.contain('Pago')
+        })
+      })
   })
 
   it('Deve filtrar por tipo "Entrada" e mostrar apenas entradas', () => {
     cy.getByTest(lancamentosSelectors.filtroTipo).select('entrada')
-    cy.getByTest(lancamentosSelectors.tabela).find('tbody tr').should('have.length.greaterThan', 0)
-    cy.getByTest(lancamentosSelectors.tabela).find('tbody tr').each(($row) => {
-      expect($row.text()).to.contain('Entrada')
-    })
+    cy.getByTest(lancamentosSelectors.tabela)
+      .find('tbody tr')
+      .should(($rows) => {
+        expect($rows.length).to.be.greaterThan(0)
+        $rows.each((_, row) => {
+          expect(row.innerText).to.contain('Entrada')
+        })
+      })
   })
 })
