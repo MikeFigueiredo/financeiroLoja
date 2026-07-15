@@ -7,10 +7,14 @@ services:
     # preDeployCommand não é suportado no plano free do Render — a migration roda aqui
     # dentro do buildCommand. É seguro rodar em toda implantação porque
     # backend/db/migrate.js controla quais migrations já foram aplicadas (tabela
-    # schema_migrations). NÃO inclui o seed aqui: ele faz TRUNCATE nas tabelas e
-    # apagaria dados reais a cada deploy. Rode o seed manualmente uma única vez pelo
-    # Shell do Render (aba "Shell" do serviço): npm run seed
-    buildCommand: npm install && npm run migrate
+    # schema_migrations).
+    #
+    # TEMPORÁRIO: "&& npm run seed" foi adicionado só para popular o banco vazio no
+    # primeiro deploy (Shell/One-Off Jobs — as formas normais de rodar isso uma vez —
+    # também são recursos pagos, não disponíveis no plano free). ISSO PRECISA SER
+    # REVERTIDO logo após confirmar que rodou, porque o seed faz TRUNCATE nas tabelas
+    # e apagaria dados reais em qualquer deploy futuro.
+    buildCommand: npm install && npm run migrate && npm run seed
     startCommand: npm start
     healthCheckPath: /api/health
     envVars:
