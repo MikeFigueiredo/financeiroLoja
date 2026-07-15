@@ -1,0 +1,202 @@
+/* Tema "clean corporativo" para o financeiroLoja — sobrepõe variáveis do Bootstrap 5.3 */
+
+:root {
+  --bs-font-sans-serif: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --bs-body-bg: #f4f6f9;
+  --bs-body-color: #1f2937;
+  --bs-border-color: #e3e8ef;
+  --bs-border-color-translucent: #e3e8ef;
+
+  --bs-primary: #2c5aa0;
+  --bs-primary-rgb: 44, 90, 160;
+  --bs-link-color: #2c5aa0;
+  --bs-link-hover-color: #1f4177;
+
+  --bs-secondary: #64748b;
+  --bs-secondary-rgb: 100, 116, 139;
+
+  --bs-success: #1a8f5e;
+  --bs-success-rgb: 26, 143, 94;
+  --bs-danger: #c8433a;
+  --bs-danger-rgb: 200, 67, 58;
+  --bs-warning: #b6790f;
+  --bs-warning-rgb: 182, 121, 15;
+
+  --app-navy: #16233c;
+  --app-shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.06), 0 1px 3px rgba(16, 24, 40, 0.06);
+  --app-shadow-md: 0 4px 10px rgba(16, 24, 40, 0.08);
+  --app-radius: 0.6rem;
+}
+
+body {
+  font-feature-settings: 'cv11';
+}
+
+/* ---------- Navbar ---------- */
+.app-navbar {
+  background-color: #ffffff !important;
+  border-bottom: 1px solid var(--bs-border-color);
+  box-shadow: var(--app-shadow-sm);
+}
+
+.app-navbar .navbar-brand {
+  color: var(--app-navy) !important;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.app-navbar .navbar-brand i {
+  color: var(--bs-primary);
+}
+
+.app-navbar .nav-link {
+  color: #4b5563 !important;
+  font-weight: 500;
+  border-radius: 0.4rem;
+  padding: 0.5rem 0.75rem !important;
+}
+
+.app-navbar .nav-link.active {
+  color: var(--bs-primary) !important;
+  background-color: rgba(44, 90, 160, 0.08);
+}
+
+.app-navbar .navbar-text {
+  color: #6b7280 !important;
+  font-size: 0.9rem;
+}
+
+/* ---------- Cards de estatística (Dashboard) ---------- */
+.stat-card {
+  border: 1px solid var(--bs-border-color);
+  border-radius: var(--app-radius);
+  box-shadow: var(--app-shadow-sm);
+  height: 100%;
+  transition: box-shadow 0.15s ease;
+}
+
+.stat-card:hover {
+  box-shadow: var(--app-shadow-md);
+}
+
+.stat-card .stat-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  flex-shrink: 0;
+}
+
+.stat-icon-success { background: rgba(26, 143, 94, 0.1); color: var(--bs-success); }
+.stat-icon-danger { background: rgba(200, 67, 58, 0.1); color: var(--bs-danger); }
+.stat-icon-primary { background: rgba(44, 90, 160, 0.1); color: var(--bs-primary); }
+.stat-icon-warning { background: rgba(182, 121, 15, 0.1); color: var(--bs-warning); }
+
+.stat-card .stat-label {
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #6b7280;
+  font-weight: 600;
+}
+
+.stat-card .stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--app-navy);
+}
+
+/* ---------- Toolbar / filtros ---------- */
+.app-toolbar {
+  background-color: #ffffff;
+  border: 1px solid var(--bs-border-color);
+  border-radius: var(--app-radius);
+  padding: 0.9rem 1rem;
+  box-shadow: var(--app-shadow-sm);
+}
+
+/* ---------- Tabela ---------- */
+.app-table-card {
+  background-color: #ffffff;
+  border: 1px solid var(--bs-border-color);
+  border-radius: var(--app-radius);
+  box-shadow: var(--app-shadow-sm);
+  overflow: hidden;
+}
+
+.app-table-card table {
+  margin-bottom: 0;
+}
+
+.app-table-card thead th {
+  background-color: #f8fafc;
+  color: #6b7280;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+  border-bottom: 1px solid var(--bs-border-color);
+  padding: 0.85rem 1rem;
+}
+
+.app-table-card tbody td {
+  padding: 0.85rem 1rem;
+  vertical-align: middle;
+  color: #374151;
+}
+
+.app-table-card tbody tr:hover {
+  background-color: #f8fafc;
+}
+
+/* ---------- Login ---------- */
+.login-page {
+  min-height: 100vh;
+  background: linear-gradient(160deg, #f4f6f9 0%, #eaf0f8 100%);
+}
+
+.login-card {
+  border: 1px solid var(--bs-border-color);
+  border-radius: 0.9rem;
+  box-shadow: var(--app-shadow-md);
+}
+
+.login-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  color: var(--app-navy);
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+.login-brand i {
+  color: var(--bs-primary);
+}
+
+/* ---------- Cards / Modais em geral ---------- */
+.card, .modal-content {
+  border-radius: var(--app-radius);
+}
+
+.modal-header, .modal-footer {
+  border-color: var(--bs-border-color);
+}
+
+.btn {
+  border-radius: 0.5rem;
+  font-weight: 500;
+}
+
+h2 {
+  color: var(--app-navy);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}

@@ -25,6 +25,7 @@ export function ToastProvider({ children }) {
             onClose={() => setToast(null)}
             delay={3500}
             autohide
+            className="shadow-sm"
           >
             <ToastBootstrap.Body className={toast.variant === 'success' ? 'text-white' : ''}>
               {toast.message}

@@ -16,9 +16,12 @@ export function Layout() {
 
   return (
     <>
-      <Navbar bg="dark" data-bs-theme="dark" expand="md" className="mb-4">
+      <Navbar expand="md" className="app-navbar mb-4" sticky="top">
         <Container>
-          <Navbar.Brand>financeiroLoja</Navbar.Brand>
+          <Navbar.Brand>
+            <i className="bi bi-graph-up-arrow" />
+            financeiroLoja
+          </Navbar.Brand>
           <Navbar.Toggle aria-controls="nav-principal" />
           <Navbar.Collapse id="nav-principal">
             <Nav className="me-auto">
@@ -32,7 +35,7 @@ export function Layout() {
             <Nav className="align-items-md-center gap-2">
               <Navbar.Text>{usuario?.nome}</Navbar.Text>
               <Button
-                variant="outline-light"
+                variant="outline-secondary"
                 size="sm"
                 data-test="mnu_btn_logout"
                 onClick={handleLogout}
@@ -43,7 +46,7 @@ export function Layout() {
           </Navbar.Collapse>
         </Container>
       </Navbar>
-      <Container>
+      <Container className="pb-5">
         <Outlet />
       </Container>
     </>

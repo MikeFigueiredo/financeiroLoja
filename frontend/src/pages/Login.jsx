@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import Container from 'react-bootstrap/Container'
 import Card from 'react-bootstrap/Card'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
@@ -31,10 +30,16 @@ export function Login() {
   }
 
   return (
-    <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
-      <Card style={{ width: '360px' }}>
-        <Card.Body>
-          <Card.Title className="mb-3 text-center">financeiroLoja</Card.Title>
+    <div className="login-page d-flex justify-content-center align-items-center">
+      <Card className="login-card" style={{ width: '380px' }}>
+        <Card.Body className="p-4">
+          <div className="login-brand mb-1">
+            <i className="bi bi-graph-up-arrow" />
+            financeiroLoja
+          </div>
+          <p className="text-center text-muted mb-4" style={{ fontSize: '0.9rem' }}>
+            Gestão financeira da sua loja
+          </p>
           {erro && (
             <Alert variant="danger" data-test="login_msg_erro">
               {erro}
@@ -73,6 +78,6 @@ export function Login() {
           </Form>
         </Card.Body>
       </Card>
-    </Container>
+    </div>
   )
 }

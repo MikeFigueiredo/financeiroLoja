@@ -81,94 +81,99 @@ export function Lancamentos() {
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h2 className="mb-0">Lançamentos</h2>
         <Button variant="primary" data-test="lanc_btn_novo" onClick={abrirNovo}>
-          + Novo Lançamento
+          <i className="bi bi-plus-lg me-1" />
+          Novo Lançamento
         </Button>
       </div>
 
-      <Row className="mb-3 g-2">
-        <Col md={3}>
-          <Form.Select
-            data-test="lanc_filtro_status"
-            value={filtroStatus}
-            onChange={(e) => setFiltroStatus(e.target.value)}
-          >
-            <option value="">Todos os status</option>
-            <option value="pendente">Pendente</option>
-            <option value="pago">Pago</option>
-            <option value="atrasado">Atrasado</option>
-          </Form.Select>
-        </Col>
-        <Col md={3}>
-          <Form.Select
-            data-test="lanc_filtro_tipo"
-            value={filtroTipo}
-            onChange={(e) => setFiltroTipo(e.target.value)}
-          >
-            <option value="">Todos os tipos</option>
-            <option value="entrada">Entrada</option>
-            <option value="saida">Saída</option>
-          </Form.Select>
-        </Col>
-      </Row>
+      <div className="app-toolbar mb-3">
+        <Row className="g-2">
+          <Col md={3}>
+            <Form.Select
+              data-test="lanc_filtro_status"
+              value={filtroStatus}
+              onChange={(e) => setFiltroStatus(e.target.value)}
+            >
+              <option value="">Todos os status</option>
+              <option value="pendente">Pendente</option>
+              <option value="pago">Pago</option>
+              <option value="atrasado">Atrasado</option>
+            </Form.Select>
+          </Col>
+          <Col md={3}>
+            <Form.Select
+              data-test="lanc_filtro_tipo"
+              value={filtroTipo}
+              onChange={(e) => setFiltroTipo(e.target.value)}
+            >
+              <option value="">Todos os tipos</option>
+              <option value="entrada">Entrada</option>
+              <option value="saida">Saída</option>
+            </Form.Select>
+          </Col>
+        </Row>
+      </div>
 
-      <Table striped bordered hover responsive data-test="lanc_tabela">
-        <thead>
-          <tr>
-            <th>Descrição</th>
-            <th>Categoria</th>
-            <th>Tipo</th>
-            <th>Valor</th>
-            <th>Vencimento</th>
-            <th>Status</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          {lancamentos.map((l) => {
-            const status = STATUS_LABEL[l.status_efetivo]
-            return (
-              <tr key={l.id}>
-                <td>{l.descricao}</td>
-                <td>{l.categoria_nome}</td>
-                <td>{l.tipo === 'entrada' ? 'Entrada' : 'Saída'}</td>
-                <td>{formatarMoeda(l.valor)}</td>
-                <td>{formatarData(l.data_vencimento)}</td>
-                <td>
-                  <Badge bg={status.variant}>{status.texto}</Badge>
-                </td>
-                <td className="d-flex gap-2">
-                  <Button
-                    size="sm"
-                    variant="outline-secondary"
-                    data-test="lanc_btn_editar"
-                    onClick={() => abrirEdicao(l)}
-                  >
-                    Editar
-                  </Button>
-                  {l.status !== 'pago' && (
+      <div className="app-table-card">
+        <Table hover responsive data-test="lanc_tabela" className="mb-0">
+          <thead>
+            <tr>
+              <th>Descrição</th>
+              <th>Categoria</th>
+              <th>Tipo</th>
+              <th>Valor</th>
+              <th>Vencimento</th>
+              <th>Status</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            {lancamentos.map((l) => {
+              const status = STATUS_LABEL[l.status_efetivo]
+              return (
+                <tr key={l.id}>
+                  <td>{l.descricao}</td>
+                  <td>{l.categoria_nome}</td>
+                  <td>{l.tipo === 'entrada' ? 'Entrada' : 'Saída'}</td>
+                  <td>{formatarMoeda(l.valor)}</td>
+                  <td>{formatarData(l.data_vencimento)}</td>
+                  <td>
+                    <Badge bg={status.variant}>{status.texto}</Badge>
+                  </td>
+                  <td className="d-flex gap-2">
                     <Button
                       size="sm"
-                      variant="outline-success"
-                      data-test="lanc_btn_pagar"
-                      onClick={() => handlePagar(l)}
+                      variant="outline-secondary"
+                      data-test="lanc_btn_editar"
+                      onClick={() => abrirEdicao(l)}
                     >
-                      Pagar
+                      Editar
                     </Button>
-                  )}
-                  <Button
-                    size="sm"
-                    variant="outline-danger"
-                    data-test="lanc_btn_excluir"
-                    onClick={() => setLancamentoExcluindo(l)}
-                  >
-                    Excluir
-                  </Button>
-                </td>
-              </tr>
-            )
-          })}
-        </tbody>
-      </Table>
+                    {l.status !== 'pago' && (
+                      <Button
+                        size="sm"
+                        variant="outline-success"
+                        data-test="lanc_btn_pagar"
+                        onClick={() => handlePagar(l)}
+                      >
+                        Pagar
+                      </Button>
+                    )}
+                    <Button
+                      size="sm"
+                      variant="outline-danger"
+                      data-test="lanc_btn_excluir"
+                      onClick={() => setLancamentoExcluindo(l)}
+                    >
+                      Excluir
+                    </Button>
+                  </td>
+                </tr>
+              )
+            })}
+          </tbody>
+        </Table>
+      </div>
 
       <LancamentoForm
         show={formAberto}

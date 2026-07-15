@@ -16,9 +16,34 @@ export function Dashboard() {
   }, [])
 
   const cards = [
-    { titulo: 'Total a Receber', valor: resumo?.totalReceber, dataTest: 'dash_card_total_receber', variant: 'success' },
-    { titulo: 'Total a Pagar', valor: resumo?.totalPagar, dataTest: 'dash_card_total_pagar', variant: 'danger' },
-    { titulo: 'Saldo em Caixa', valor: resumo?.saldo, dataTest: 'dash_card_saldo', variant: 'primary' },
+    {
+      titulo: 'Total a Receber',
+      valor: formatarMoeda(resumo?.totalReceber),
+      dataTest: 'dash_card_total_receber',
+      variant: 'success',
+      icon: 'bi-arrow-down-circle',
+    },
+    {
+      titulo: 'Total a Pagar',
+      valor: formatarMoeda(resumo?.totalPagar),
+      dataTest: 'dash_card_total_pagar',
+      variant: 'danger',
+      icon: 'bi-arrow-up-circle',
+    },
+    {
+      titulo: 'Saldo em Caixa',
+      valor: formatarMoeda(resumo?.saldo),
+      dataTest: 'dash_card_saldo',
+      variant: 'primary',
+      icon: 'bi-wallet2',
+    },
+    {
+      titulo: 'Contas Atrasadas',
+      valor: resumo?.contasAtrasadas ?? 0,
+      dataTest: 'dash_card_atrasadas',
+      variant: 'warning',
+      icon: 'bi-exclamation-circle',
+    },
   ]
 
   return (
@@ -27,26 +52,19 @@ export function Dashboard() {
       <Row className="g-3">
         {cards.map((card) => (
           <Col md={3} key={card.dataTest}>
-            <Card border={card.variant} data-test={card.dataTest}>
-              <Card.Body>
-                <Card.Subtitle className="text-muted mb-2">{card.titulo}</Card.Subtitle>
-                <Card.Title as="p" className={`text-${card.variant} fs-4 mb-0`}>
-                  {formatarMoeda(card.valor)}
-                </Card.Title>
+            <Card className="stat-card" data-test={card.dataTest}>
+              <Card.Body className="d-flex align-items-start gap-3">
+                <div className={`stat-icon stat-icon-${card.variant}`}>
+                  <i className={`bi ${card.icon}`} />
+                </div>
+                <div>
+                  <div className="stat-label">{card.titulo}</div>
+                  <div className="stat-value">{card.valor}</div>
+                </div>
               </Card.Body>
             </Card>
           </Col>
         ))}
-        <Col md={3}>
-          <Card border="warning" data-test="dash_card_atrasadas">
-            <Card.Body>
-              <Card.Subtitle className="text-muted mb-2">Contas Atrasadas</Card.Subtitle>
-              <Card.Title as="p" className="text-warning fs-4 mb-0">
-                {resumo?.contasAtrasadas ?? 0}
-              </Card.Title>
-            </Card.Body>
-          </Card>
-        </Col>
       </Row>
     </>
   )
