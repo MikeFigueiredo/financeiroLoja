@@ -93,11 +93,11 @@ Ambos têm camada gratuita sem necessidade de cartão. Crie um projeto Postgres 
 
 O plano free do Render hiberna após um período sem tráfego; a primeira requisição depois disso demora ~30-50s para "acordar" o serviço.
 
-### 3. Front-end — Vercel (usa o `vercel.json` já commitado)
+### 3. Front-end — Vercel (usa o `frontend/vercel.json` já commitado)
 
 1. No [dashboard da Vercel](https://vercel.com/new), importe o mesmo repositório (a integração com o GitHub é nativa — não precisa de nenhum GitHub Secret nem workflow de deploy).
-2. O [vercel.json](vercel.json) na raiz já define o build (`npm run build --prefix frontend`) e a saída (`frontend/dist`), além do rewrite de SPA necessário para as rotas do React Router funcionarem em acesso direto (ex. `/dashboard`). Deixe o "Root Directory" como raiz do repositório.
-3. Em **Settings → Environment Variables**, adicione `VITE_API_URL` = `https://<seu-backend-no-render>.onrender.com/api` (para os ambientes Production e Preview). Não é um valor sensível — variáveis `VITE_*` ficam embutidas no bundle que roda no navegador.
+2. A Vercel detecta que o monorepo tem duas pastas com apps (`frontend` e `backend`) e pode ativar automaticamente o modo "Services" (multi-app) — **não é o que queremos**, já que só o front-end vai para a Vercel. Em vez de usar esse modo, defina o **Root Directory** como `frontend` (botão "Edit" ao lado do campo, na tela de import). Com isso a Vercel passa a tratar só a pasta `frontend/` como o projeto, detecta Vite automaticamente (build `npm run build`, saída `dist`), e lê o [frontend/vercel.json](frontend/vercel.json) — que só contém o rewrite de SPA necessário para as rotas do React Router funcionarem em acesso direto (ex. `/dashboard`).
+3. Em **Environment Variables**, adicione `VITE_API_URL` = `https://<seu-backend-no-render>.onrender.com/api` (para os ambientes Production e Preview). Não é um valor sensível — variáveis `VITE_*` ficam embutidas no bundle que roda no navegador.
 4. Deploy. A cada push na branch configurada, a Vercel reimplanta automaticamente.
 
 ### CI — GitHub Actions
