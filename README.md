@@ -87,7 +87,7 @@ Ambos têm camada gratuita sem necessidade de cartão. Crie um projeto Postgres 
 
 1. No [dashboard do Render](https://dashboard.render.com), **New +** → **Blueprint** → conecte o repositório do GitHub.
 2. O Render lê o [render.yaml](render.yaml) da raiz e propõe o serviço `financeiroloja-backend`. Quando pedir o valor de `DATABASE_URL`, cole a connection string do Neon/Supabase (as demais variáveis — `JWT_SECRET`, `JWT_EXPIRES_IN` — já vêm definidas no blueprint).
-3. Aplique o blueprint. As migrations rodam automaticamente a cada deploy (`preDeployCommand`, idempotente — controla o que já foi aplicado em `schema_migrations`).
+3. Aplique o blueprint. As migrations rodam automaticamente a cada deploy (dentro do `buildCommand` — `preDeployCommand` não é suportado no plano free; a migration é idempotente, controla o que já foi aplicado em `schema_migrations`).
 4. **Uma única vez**, após o primeiro deploy, rode o seed manualmente pela aba **Shell** do serviço no Render: `npm run seed`. Não é automático de propósito — o seed faz `TRUNCATE` nas tabelas, e rodar isso em todo deploy apagaria dados reais.
 5. Anote a URL pública do serviço (ex.: `https://financeiroloja-backend.onrender.com`) — o front-end vai apontar `VITE_API_URL` para `<essa-url>/api`.
 

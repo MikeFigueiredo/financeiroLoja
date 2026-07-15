@@ -4,12 +4,13 @@ services:
     runtime: node
     plan: free
     rootDir: backend
-    buildCommand: npm install
-    # Roda em toda implantação — é seguro porque backend/db/migrate.js controla quais
-    # migrations já foram aplicadas (tabela schema_migrations). NÃO inclui o seed aqui:
-    # ele faz TRUNCATE nas tabelas e apagaria dados reais a cada deploy. Rode o seed
-    # manualmente uma única vez pelo Shell do Render (aba "Shell" do serviço): npm run seed
-    preDeployCommand: npm run migrate
+    # preDeployCommand não é suportado no plano free do Render — a migration roda aqui
+    # dentro do buildCommand. É seguro rodar em toda implantação porque
+    # backend/db/migrate.js controla quais migrations já foram aplicadas (tabela
+    # schema_migrations). NÃO inclui o seed aqui: ele faz TRUNCATE nas tabelas e
+    # apagaria dados reais a cada deploy. Rode o seed manualmente uma única vez pelo
+    # Shell do Render (aba "Shell" do serviço): npm run seed
+    buildCommand: npm install && npm run migrate
     startCommand: npm start
     healthCheckPath: /api/health
     envVars:
